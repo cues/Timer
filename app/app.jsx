@@ -9,6 +9,9 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var {Route, Router, IndexRoute, hashHistory} = require('react-router');
 var Main = require('Main');
+var Timer = require('Timer');
+var Countdown = require('Countdown');
+
 
 // the top line can be writter like this in es5
 // var Route = require('react-router').route;
@@ -31,7 +34,8 @@ ReactDOM.render(
   <Router history={hashHistory}>
 
     <Route path="/" component={Main}>
-
+      <IndexRoute path="/" component={Timer}></IndexRoute>
+      <Route path="countdown" component={Countdown}></Route>
 
     </Route>
 

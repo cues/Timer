@@ -10,7 +10,7 @@ var Nav = () => {
 
               <div className="eachMenu display-flex">Timer App</div>
               <div className="eachMenu display-flex"><IndexLink to="/" activeClassName="active-link">TIMER</IndexLink></div>
-              <div className="eachMenu display-flex"><Link to="" activeClassName="active-link">COUNTDOWN</Link></div>
+              <div className="eachMenu display-flex"><Link to="countdown" activeClassName="active-link">COUNTDOWN</Link></div>
 
           </div>
           <div className="top-bar-right">

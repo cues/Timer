@@ -113,6 +113,8 @@
 	var hashHistory = _require.hashHistory;
 
 	var Main = __webpack_require__(229);
+	var Timer = __webpack_require__(231);
+	var Countdown = __webpack_require__(238);
 
 	// the top line can be writter like this in es5
 	// var Route = require('react-router').route;
@@ -122,16 +124,21 @@
 
 
 	// Load foundation
-	__webpack_require__(231);
+	__webpack_require__(232);
 	$(document).foundation();
 
 	// load css
-	__webpack_require__(235);
+	__webpack_require__(236);
 
 	ReactDOM.render(React.createElement(
 	  Router,
 	  { history: hashHistory },
-	  React.createElement(Route, { path: '/', component: Main })
+	  React.createElement(
+	    Route,
+	    { path: '/', component: Main },
+	    React.createElement(IndexRoute, { path: '/', component: Timer }),
+	    React.createElement(Route, { path: 'countdown', component: Countdown })
+	  )
 	), document.getElementById('app'));
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
 
@@ -25874,7 +25881,7 @@
 	                { className: 'eachMenu display-flex' },
 	                React.createElement(
 	                    Link,
-	                    { to: '', activeClassName: 'active-link' },
+	                    { to: 'countdown', activeClassName: 'active-link' },
 	                    'COUNTDOWN'
 	                )
 	            )
@@ -25901,13 +25908,35 @@
 /* 231 */
 /***/ function(module, exports, __webpack_require__) {
 
+	"use strict";
+
+	var React = __webpack_require__(8);
+
+	var Timer = React.createClass({
+	  displayName: "Timer",
+
+	  render: function render() {
+	    return React.createElement(
+	      "div",
+	      { className: "timer" },
+	      "Timer"
+	    );
+	  }
+	});
+
+	module.exports = Timer;
+
+/***/ },
+/* 232 */
+/***/ function(module, exports, __webpack_require__) {
+
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(232);
+	var content = __webpack_require__(233);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(234)(content, {});
+	var update = __webpack_require__(235)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -25924,10 +25953,10 @@
 	}
 
 /***/ },
-/* 232 */
+/* 233 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(233)();
+	exports = module.exports = __webpack_require__(234)();
 	// imports
 
 
@@ -25938,7 +25967,7 @@
 
 
 /***/ },
-/* 233 */
+/* 234 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -25993,7 +26022,7 @@
 	};
 
 /***/ },
-/* 234 */
+/* 235 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -26245,16 +26274,16 @@
 
 
 /***/ },
-/* 235 */
+/* 236 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(236);
+	var content = __webpack_require__(237);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(234)(content, {});
+	var update = __webpack_require__(235)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -26271,18 +26300,40 @@
 	}
 
 /***/ },
-/* 236 */
+/* 237 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(233)();
+	exports = module.exports = __webpack_require__(234)();
 	// imports
 
 
 	// module
-	exports.push([module.id, ".top-bar {\n  background-color: rgba(250, 250, 250, 0.8);\n  box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.6);\n  height: 60px !important;\n  padding-top: 0px !important; }\n  .top-bar .top-bar-left {\n    width: 50% !important; }\n    .top-bar .top-bar-left .eachMenu {\n      float: left;\n      width: 30% !important;\n      margin-left: 2.5%;\n      height: 60px !important; }\n  .top-bar .top-bar-right {\n    width: 50% !important;\n    text-align: right; }\n    .top-bar .top-bar-right .credit {\n      height: 60px !important;\n      justify-content: flex-end !important;\n      padding-right: 20px; }\n\n.row {\n  /*background-color: red;*/\n  min-height: calc(100vh - 60px);\n  display: flex;\n  align-items: center;\n  justify-content: center; }\n\n@media (max-width: 962px) {\n  .row {\n    min-height: calc(100vh - 150px); }\n  .top-bar {\n    height: 100px !important; }\n    .top-bar .top-bar-left, .top-bar .top-bar-right {\n      width: 100% !important; }\n  .credit {\n    height: 40px !important;\n    justify-content: center !important; } }\n\n.display-flex {\n  display: flex;\n  align-items: center;\n  justify-content: center; }\n\n.bt {\n  font-family: 'Bitter'; }\n", ""]);
+	exports.push([module.id, ".top-bar {\n  background-color: rgba(250, 250, 250, 0.8);\n  box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.6);\n  height: 60px !important;\n  padding-top: 0px !important; }\n  .top-bar .active-link {\n    font-weight: bold; }\n  .top-bar .top-bar-left {\n    width: 50% !important; }\n    .top-bar .top-bar-left .eachMenu {\n      float: left;\n      width: 30% !important;\n      margin-left: 2.5%;\n      height: 60px !important; }\n  .top-bar .top-bar-right {\n    width: 50% !important;\n    text-align: right; }\n    .top-bar .top-bar-right .credit {\n      height: 60px !important;\n      justify-content: flex-end !important;\n      padding-right: 20px; }\n\n.row {\n  /*background-color: red;*/\n  min-height: calc(100vh - 60px);\n  display: flex;\n  align-items: center;\n  justify-content: center; }\n\n@media (max-width: 962px) {\n  .row {\n    min-height: calc(100vh - 150px); }\n  .top-bar {\n    height: 100px !important; }\n    .top-bar .top-bar-left, .top-bar .top-bar-right {\n      width: 100% !important; }\n  .credit {\n    height: 40px !important;\n    justify-content: center !important; } }\n\n.display-flex {\n  display: flex;\n  align-items: center;\n  justify-content: center; }\n\n.bt {\n  font-family: 'Bitter'; }\n", ""]);
 
 	// exports
 
+
+/***/ },
+/* 238 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var React = __webpack_require__(8);
+
+	var Countdown = React.createClass({
+	  displayName: "Countdown",
+
+	  render: function render() {
+	    return React.createElement(
+	      "div",
+	      { className: "countdown" },
+	      "Countdown"
+	    );
+	  }
+	});
+
+	module.exports = Countdown;
 
 /***/ }
 /******/ ]);
