@@ -124,11 +124,11 @@
 
 
 	// Load foundation
-	__webpack_require__(233);
+	__webpack_require__(234);
 	$(document).foundation();
 
 	// load css
-	__webpack_require__(237);
+	__webpack_require__(238);
 
 	ReactDOM.render(React.createElement(
 	  Router,
@@ -25930,18 +25930,19 @@
 /* 232 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	var React = __webpack_require__(8);
+	var Clock = __webpack_require__(233);
 
 	var Countdown = React.createClass({
-	  displayName: "Countdown",
+	  displayName: 'Countdown',
 
 	  render: function render() {
 	    return React.createElement(
-	      "div",
-	      { className: "countdown" },
-	      "Countdown"
+	      'div',
+	      { className: 'countdown' },
+	      React.createElement(Clock, { totalSeconds: 129 })
 	    );
 	  }
 	});
@@ -25952,13 +25953,67 @@
 /* 233 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+
+	var React = __webpack_require__(8);
+
+	var Clock = React.createClass({
+	  displayName: 'Clock',
+
+
+	  getDefaultProps: function getDefaultProps() {
+	    return {
+	      totalSeconds: 0
+	    };
+	  },
+
+	  propTypes: {
+	    totalSeconds: React.PropTypes.number
+	  },
+
+	  formatSeconds: function formatSeconds(totalSeconds) {
+	    var seconds = totalSeconds % 60;
+	    var minutes = Math.floor(totalSeconds / 60);
+
+	    if (seconds < 10) {
+	      seconds = '0' + seconds;
+	    }
+	    if (minutes < 10) {
+	      minutes = '0' + minutes;
+	    }
+
+	    return minutes + ":" + seconds;
+	  },
+
+	  render: function render() {
+	    var totalSeconds = this.props.totalSeconds;
+
+
+	    return React.createElement(
+	      'div',
+	      { className: 'clock display-flex' },
+	      React.createElement(
+	        'span',
+	        { className: 'clock-text' },
+	        this.formatSeconds(totalSeconds)
+	      )
+	    );
+	  }
+	});
+
+	module.exports = Clock;
+
+/***/ },
+/* 234 */
+/***/ function(module, exports, __webpack_require__) {
+
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(234);
+	var content = __webpack_require__(235);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(236)(content, {});
+	var update = __webpack_require__(237)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -25975,10 +26030,10 @@
 	}
 
 /***/ },
-/* 234 */
+/* 235 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(235)();
+	exports = module.exports = __webpack_require__(236)();
 	// imports
 
 
@@ -25989,7 +26044,7 @@
 
 
 /***/ },
-/* 235 */
+/* 236 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -26044,7 +26099,7 @@
 	};
 
 /***/ },
-/* 236 */
+/* 237 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -26296,16 +26351,16 @@
 
 
 /***/ },
-/* 237 */
+/* 238 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(238);
+	var content = __webpack_require__(239);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(236)(content, {});
+	var update = __webpack_require__(237)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -26322,15 +26377,15 @@
 	}
 
 /***/ },
-/* 238 */
+/* 239 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(235)();
+	exports = module.exports = __webpack_require__(236)();
 	// imports
 
 
 	// module
-	exports.push([module.id, ".top-bar {\n  background-color: rgba(250, 250, 250, 0.8);\n  box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.6);\n  height: 60px !important;\n  padding-top: 0px !important; }\n  .top-bar .active-link {\n    font-weight: bold; }\n  .top-bar .top-bar-left {\n    width: 50% !important; }\n    .top-bar .top-bar-left .eachMenu {\n      float: left;\n      width: 30% !important;\n      margin-left: 2.5%;\n      height: 60px !important; }\n  .top-bar .top-bar-right {\n    width: 50% !important;\n    text-align: right; }\n    .top-bar .top-bar-right .credit {\n      height: 60px !important;\n      justify-content: flex-end !important;\n      padding-right: 20px; }\n\n.row {\n  /*background-color: red;*/\n  min-height: calc(100vh - 60px);\n  display: flex;\n  align-items: center;\n  justify-content: center; }\n\n@media (max-width: 962px) {\n  .row {\n    min-height: calc(100vh - 150px); }\n  .top-bar {\n    height: 100px !important; }\n    .top-bar .top-bar-left, .top-bar .top-bar-right {\n      width: 100% !important; }\n  .credit {\n    height: 40px !important;\n    justify-content: center !important; } }\n\n.display-flex {\n  display: flex;\n  align-items: center;\n  justify-content: center; }\n\n.bt {\n  font-family: 'Bitter'; }\n", ""]);
+	exports.push([module.id, ".top-bar {\n  background-color: rgba(250, 250, 250, 0.8);\n  box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.6);\n  height: 60px !important;\n  padding-top: 0px !important; }\n  .top-bar .active-link {\n    font-weight: bold; }\n  .top-bar .top-bar-left {\n    width: 50% !important; }\n    .top-bar .top-bar-left .eachMenu {\n      float: left;\n      width: 30% !important;\n      margin-left: 2.5%;\n      height: 60px !important; }\n  .top-bar .top-bar-right {\n    width: 50% !important;\n    text-align: right; }\n    .top-bar .top-bar-right .credit {\n      height: 60px !important;\n      justify-content: flex-end !important;\n      padding-right: 20px; }\n\n.row {\n  /*background-color: red;*/\n  min-height: calc(100vh - 60px);\n  display: flex;\n  align-items: center;\n  justify-content: center; }\n\n@media (max-width: 962px) {\n  .row {\n    min-height: calc(100vh - 150px); }\n  .top-bar {\n    height: 100px !important; }\n    .top-bar .top-bar-left, .top-bar .top-bar-right {\n      width: 100% !important; }\n  .credit {\n    height: 40px !important;\n    justify-content: center !important; } }\n\n.clock {\n  align-items: center;\n  background-color: rgba(15, 101, 141, 0.4);\n  border: 2px solid rgba(15, 101, 141, 0.9);\n  border-radius: 100%;\n  height: 14rem;\n  margin: 4rem auto;\n  width: 14rem; }\n\n.clock-text {\n  color: rgba(255, 255, 255, 0.8);\n  font-size: 2.25rem;\n  font-weight: 300; }\n\n.display-flex {\n  display: flex;\n  align-items: center;\n  justify-content: center; }\n\n.bt {\n  font-family: 'Bitter'; }\n", ""]);
 
 	// exports
 
