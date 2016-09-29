@@ -25948,7 +25948,7 @@
 	  displayName: 'Countdown',
 
 	  getInitialState: function getInitialState() {
-	    return { count: 23 };
+	    return { count: 0 };
 	  },
 	  handleSetCountdown: function handleSetCountdown(seconds) {
 	    this.setState({

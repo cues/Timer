@@ -5,7 +5,7 @@ var CountdownForm = require('CountdownForm');
 
 var Countdown = React.createClass({
   getInitialState: function(){
-    return {count: 23};
+    return {count: 0};
   },
   handleSetCountdown: function (seconds) {
     this.setState({
