@@ -25872,7 +25872,7 @@
 	            { className: 'top-bar-left' },
 	            React.createElement(
 	                'div',
-	                { className: 'eachMenu display-flex' },
+	                { className: 'eachMenu display-flex ' },
 	                'Timer App'
 	            ),
 	            React.createElement(
@@ -25948,19 +25948,47 @@
 	  displayName: 'Countdown',
 
 	  getInitialState: function getInitialState() {
-	    return { count: 0 };
+	    return {
+	      count: 0,
+	      countdownStatus: 'Stopped'
+	    };
 	  },
+
+	  componentDidUpdate: function componentDidUpdate(prevProps, prevState) {
+	    if (this.state.countdownStatus !== prevState.countdownStatus) {
+	      switch (this.state.countdownStatus) {
+	        case 'Started':
+	          this.startTimer();
+	          break;
+	      }
+	    }
+	  },
+
+	  startTimer: function startTimer() {
+	    var _this = this;
+
+	    this.timer = setInterval(function () {
+	      var newCount = _this.state.count - 1;
+	      _this.setState({
+	        count: newCount >= 0 ? newCount : 0
+	      });
+	    }, 1000);
+	  },
+
 	  handleSetCountdown: function handleSetCountdown(seconds) {
 	    this.setState({
-	      count: seconds
+	      count: seconds,
+	      countdownStatus: 'Started'
 	    });
 	  },
+
 	  render: function render() {
 	    var count = this.state.count;
+	    // var {countdownStatus} = this.state;
 
 	    return React.createElement(
 	      'div',
-	      { className: 'countdown' },
+	      { className: 'countdown bt' },
 	      React.createElement(Clock, { totalSeconds: count }),
 	      React.createElement(CountdownForm, { onSetCountdown: this.handleSetCountdown })
 	    );
@@ -26049,11 +26077,11 @@
 	      null,
 	      React.createElement(
 	        "form",
-	        { ref: "form", onSubmit: this.onSubmit, "class": "countdown-form" },
-	        React.createElement("input", { type: "text", ref: "seconds", placeholder: "Enter Time In Seconds" }),
+	        { ref: "form", onSubmit: this.onSubmit, className: "countdown-form bt" },
+	        React.createElement("input", { type: "text", ref: "seconds", placeholder: "Enter Time In Seconds", className: "bt" }),
 	        React.createElement(
 	          "button",
-	          { className: "button expanded" },
+	          { className: "button expanded bt" },
 	          "START"
 	        )
 	      )
@@ -26445,7 +26473,7 @@
 
 
 	// module
-	exports.push([module.id, ".top-bar {\n  background-color: rgba(250, 250, 250, 0.8);\n  box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.6);\n  height: 60px !important;\n  padding-top: 0px !important; }\n  .top-bar .active-link {\n    font-weight: bold; }\n  .top-bar .top-bar-left {\n    width: 50% !important; }\n    .top-bar .top-bar-left .eachMenu {\n      float: left;\n      width: 30% !important;\n      margin-left: 2.5%;\n      height: 60px !important; }\n  .top-bar .top-bar-right {\n    width: 50% !important;\n    text-align: right; }\n    .top-bar .top-bar-right .credit {\n      height: 60px !important;\n      justify-content: flex-end !important;\n      padding-right: 20px; }\n\n@media (max-width: 962px) {\n  .row {\n    min-height: calc(100vh - 150px); }\n  .top-bar {\n    height: 100px !important; }\n    .top-bar .top-bar-left, .top-bar .top-bar-right {\n      width: 100% !important; }\n  .credit {\n    height: 40px !important;\n    justify-content: center !important; } }\n\n.clock {\n  align-items: center;\n  background-color: rgba(15, 101, 141, 0.4);\n  border: 2px solid rgba(15, 101, 141, 0.9);\n  border-radius: 100%;\n  height: 14rem;\n  margin: 4rem auto;\n  width: 14rem; }\n\n.clock-text {\n  color: rgba(255, 255, 255, 0.8);\n  font-size: 2.25rem;\n  font-weight: 300; }\n\n.display-flex {\n  display: flex;\n  align-items: center;\n  justify-content: center; }\n\n.bt {\n  font-family: 'Bitter'; }\n", ""]);
+	exports.push([module.id, ".top-bar {\n  background-color: rgba(250, 250, 250, 0.8);\n  box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.6);\n  height: 60px !important;\n  padding-top: 0px !important; }\n  .top-bar .active-link {\n    font-weight: bold; }\n  .top-bar .top-bar-left {\n    width: 50% !important; }\n    .top-bar .top-bar-left .eachMenu {\n      float: left;\n      width: 30% !important;\n      margin-left: 2.5%;\n      height: 60px !important; }\n  .top-bar .top-bar-right {\n    width: 50% !important;\n    text-align: right; }\n    .top-bar .top-bar-right .credit {\n      height: 60px !important;\n      justify-content: flex-end !important;\n      padding-right: 20px; }\n\n@media (max-width: 962px) {\n  .row {\n    min-height: calc(100vh - 150px); }\n  .top-bar {\n    height: 100px !important; }\n    .top-bar .top-bar-left, .top-bar .top-bar-right {\n      width: 100% !important; }\n  .credit {\n    height: 40px !important;\n    justify-content: center !important; } }\n\n.clock {\n  align-items: center;\n  background-color: rgba(15, 101, 141, 0.4);\n  border: 2px solid rgba(15, 101, 141, 0.9);\n  border-top-left-radius: 20px;\n  border-bottom-right-radius: 20px;\n  border-top-right-radius: 100px;\n  border-bottom-left-radius: 100px;\n  height: 14rem;\n  margin: 4rem auto;\n  width: 14rem;\n  -ms-transform: rotate(-45deg);\n  /* IE 9 */\n  -webkit-transform: rotate(-45deg);\n  /* Chrome, Safari, Opera */\n  transform: rotate(-45deg); }\n\n.clock-text {\n  color: rgba(255, 255, 255, 0.8);\n  font-size: 2.25rem;\n  font-weight: 300;\n  -ms-transform: rotate(45deg);\n  /* IE 9 */\n  -webkit-transform: rotate(45deg);\n  /* Chrome, Safari, Opera */\n  transform: rotate(45deg); }\n\n.display-flex {\n  display: flex;\n  align-items: center;\n  justify-content: center; }\n\n.bt {\n  font-family: 'bitter'; }\n", ""]);
 
 	// exports
 
