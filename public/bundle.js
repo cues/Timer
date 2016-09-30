@@ -114,7 +114,7 @@
 
 	var Main = __webpack_require__(229);
 	var Timer = __webpack_require__(232);
-	var Countdown = __webpack_require__(233);
+	var Countdown = __webpack_require__(235);
 
 	// the top line can be writter like this in es5
 	// var Route = require('react-router').route;
@@ -25930,18 +25930,71 @@
 /* 232 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	var React = __webpack_require__(8);
+	var Clock = __webpack_require__(233);
+	var Controls = __webpack_require__(234);
 
 	var Timer = React.createClass({
-	  displayName: "Timer",
+	  displayName: 'Timer',
+
+	  getInitialState: function getInitialState() {
+	    return {
+	      count: 0,
+	      timerStatus: 'Stopped'
+	    };
+	  },
+
+	  componentDidUpdate: function componentDidUpdate(prevProps, prevState) {
+	    if (this.state.timerStatus !== prevState.timerStatus) {
+	      switch (this.state.timerStatus) {
+	        case 'Started':
+	          this.handleStart();
+	          break;
+	        case 'Stopped':
+	          this.setState({ count: 0 });
+	        case 'Paused':
+	          clearInterval(this.timer);
+	          this.timer = undefined;
+	          break;
+	      }
+	    }
+	  },
+
+	  componentWillUnmount: function componentWillUnmount() {
+	    clearInterval(this.timer);
+	  },
+
+	  handleStart: function handleStart() {
+	    var _this = this;
+
+	    this.timer = setInterval(function () {
+	      _this.setState({
+	        count: _this.state.count + 1
+	      });
+	    }, 1000);
+	  },
+
+	  handleStatusChange: function handleStatusChange(newTimerStatus) {
+	    this.setState({ timerStatus: newTimerStatus });
+	  },
 
 	  render: function render() {
+	    var _state = this.state;
+	    var count = _state.count;
+	    var timerStatus = _state.timerStatus;
+
 	    return React.createElement(
-	      "div",
-	      { className: "timer bt" },
-	      "Timer"
+	      'div',
+	      { className: 'timer bt' },
+	      React.createElement(
+	        'div',
+	        { className: 'header-container display-flex' },
+	        'TIMER'
+	      ),
+	      React.createElement(Clock, { totalSeconds: count }),
+	      React.createElement(Controls, { countdownStatus: timerStatus, onStatusChange: this.handleStatusChange })
 	    );
 	  }
 	});
@@ -25955,9 +26008,128 @@
 	'use strict';
 
 	var React = __webpack_require__(8);
-	var Clock = __webpack_require__(234);
-	var CountdownForm = __webpack_require__(235);
-	var Controls = __webpack_require__(236);
+
+	var Clock = React.createClass({
+	  displayName: 'Clock',
+
+
+	  getDefaultProps: function getDefaultProps() {
+	    return {
+	      totalSeconds: 0
+	    };
+	  },
+
+	  propTypes: {
+	    totalSeconds: React.PropTypes.number
+	  },
+
+	  formatSeconds: function formatSeconds(totalSeconds) {
+	    var seconds = totalSeconds % 60;
+	    var minutes = Math.floor(totalSeconds / 60);
+
+	    if (seconds < 10) {
+	      seconds = '0' + seconds;
+	    }
+	    if (minutes < 10) {
+	      minutes = '0' + minutes;
+	    }
+
+	    return minutes + ":" + seconds;
+	  },
+
+	  render: function render() {
+	    var totalSeconds = this.props.totalSeconds;
+
+
+	    return React.createElement(
+	      'div',
+	      { className: 'clock display-flex' },
+	      React.createElement(
+	        'span',
+	        { className: 'clock-text' },
+	        this.formatSeconds(totalSeconds)
+	      )
+	    );
+	  }
+	});
+
+	module.exports = Clock;
+
+/***/ },
+/* 234 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(8);
+
+	var Controls = React.createClass({
+	  displayName: 'Controls',
+
+	  propTypes: {
+	    countdownStatus: React.PropTypes.string.isRequired,
+	    onStatusChange: React.PropTypes.func.isRequired
+	  },
+
+	  onStatusChange: function onStatusChange(newStatus) {
+	    var _this = this;
+
+	    return function () {
+	      _this.props.onStatusChange(newStatus);
+	    };
+	  },
+
+	  componentWillReceiveProps: function componentWillReceiveProps(newProps) {
+	    console.log('componentWillReceiveProps', newProps.countdownStatus);
+	  },
+
+	  render: function render() {
+	    var _this2 = this;
+
+	    var countdownStatus = this.props.countdownStatus;
+
+	    var renderStartStopButton = function renderStartStopButton() {
+	      if (countdownStatus === 'Started') {
+	        return React.createElement(
+	          'button',
+	          { className: 'button secondary transition-3', onClick: _this2.onStatusChange('Paused') },
+	          'Pause'
+	        );
+	      } else {
+	        return React.createElement(
+	          'button',
+	          { className: 'button primary transition-3', onClick: _this2.onStatusChange('Started') },
+	          'Start'
+	        );
+	      }
+	    };
+
+	    return React.createElement(
+	      'div',
+	      { className: 'controls' },
+	      renderStartStopButton(),
+	      React.createElement(
+	        'button',
+	        { className: 'button alert hollow transition-3', onClick: this.onStatusChange('Stopped') },
+	        'Clear'
+	      )
+	    );
+	  }
+
+	});
+
+	module.exports = Controls;
+
+/***/ },
+/* 235 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(8);
+	var Clock = __webpack_require__(233);
+	var CountdownForm = __webpack_require__(236);
+	var Controls = __webpack_require__(234);
 
 	var Countdown = React.createClass({
 	  displayName: 'Countdown',
@@ -26042,6 +26214,11 @@
 	    return React.createElement(
 	      'div',
 	      { className: 'countdown bt' },
+	      React.createElement(
+	        'div',
+	        { className: 'header-container display-flex' },
+	        'COUNTDOWN'
+	      ),
 	      React.createElement(Clock, { totalSeconds: count }),
 	      renderControlsArea()
 	    );
@@ -26051,61 +26228,7 @@
 	module.exports = Countdown;
 
 /***/ },
-/* 234 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var React = __webpack_require__(8);
-
-	var Clock = React.createClass({
-	  displayName: 'Clock',
-
-
-	  getDefaultProps: function getDefaultProps() {
-	    return {
-	      totalSeconds: 0
-	    };
-	  },
-
-	  propTypes: {
-	    totalSeconds: React.PropTypes.number
-	  },
-
-	  formatSeconds: function formatSeconds(totalSeconds) {
-	    var seconds = totalSeconds % 60;
-	    var minutes = Math.floor(totalSeconds / 60);
-
-	    if (seconds < 10) {
-	      seconds = '0' + seconds;
-	    }
-	    if (minutes < 10) {
-	      minutes = '0' + minutes;
-	    }
-
-	    return minutes + ":" + seconds;
-	  },
-
-	  render: function render() {
-	    var totalSeconds = this.props.totalSeconds;
-
-
-	    return React.createElement(
-	      'div',
-	      { className: 'clock display-flex' },
-	      React.createElement(
-	        'span',
-	        { className: 'clock-text' },
-	        this.formatSeconds(totalSeconds)
-	      )
-	    );
-	  }
-	});
-
-	module.exports = Clock;
-
-/***/ },
-/* 235 */
+/* 236 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -26143,71 +26266,6 @@
 	});
 
 	module.exports = CountdownForm;
-
-/***/ },
-/* 236 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var React = __webpack_require__(8);
-
-	var Controls = React.createClass({
-	  displayName: 'Controls',
-
-	  propTypes: {
-	    countdownStatus: React.PropTypes.string.isRequired,
-	    onStatusChange: React.PropTypes.func.isRequired
-	  },
-
-	  onStatusChange: function onStatusChange(newStatus) {
-	    var _this = this;
-
-	    return function () {
-	      _this.props.onStatusChange(newStatus);
-	    };
-	  },
-
-	  componentWillReceiveProps: function componentWillReceiveProps(newProps) {
-	    console.log('componentWillReceiveProps', newProps.countdownStatus);
-	  },
-
-	  render: function render() {
-	    var _this2 = this;
-
-	    var countdownStatus = this.props.countdownStatus;
-
-	    var renderStartStopButton = function renderStartStopButton() {
-	      if (countdownStatus === 'Started') {
-	        return React.createElement(
-	          'button',
-	          { className: 'button secondary transition-3', onClick: _this2.onStatusChange('Paused') },
-	          'Pause'
-	        );
-	      } else if (countdownStatus == 'Paused') {
-	        return React.createElement(
-	          'button',
-	          { className: 'button primary transition-3', onClick: _this2.onStatusChange('Started') },
-	          'Start'
-	        );
-	      }
-	    };
-
-	    return React.createElement(
-	      'div',
-	      { className: 'controls' },
-	      renderStartStopButton(),
-	      React.createElement(
-	        'button',
-	        { className: 'button alert hollow transition-3', onClick: this.onStatusChange('Stopped') },
-	        'Clear'
-	      )
-	    );
-	  }
-
-	});
-
-	module.exports = Controls;
 
 /***/ },
 /* 237 */
@@ -26591,7 +26649,7 @@
 
 
 	// module
-	exports.push([module.id, ".menu-bar {\n  background-color: rgba(47, 47, 47, 0.8);\n  box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.6);\n  height: 60px !important;\n  padding-top: 0px !important;\n  width: 100vw; }\n  .menu-bar .active-link {\n    font-weight: bold;\n    font-size: 35px;\n    -webkit-transition: all .3s ease-in-out;\n    -moz-transition: all .3s ease-in-out;\n    -o-transition: all .3s ease-in-out;\n    transition: all .3s ease-in-out; }\n  .menu-bar .eachMenu {\n    float: left;\n    width: 30% !important;\n    margin-left: 2.5%;\n    height: 60px !important;\n    font-size: 30px;\n    -webkit-transition: all .3s ease-in-out;\n    -moz-transition: all .3s ease-in-out;\n    -o-transition: all .3s ease-in-out;\n    transition: all .3s ease-in-out; }\n    .menu-bar .eachMenu a {\n      color: rgba(221, 221, 221, 0.6) !important; }\n  .menu-bar .logo {\n    font-size: 40px;\n    cursor: default;\n    text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.7); }\n\n.credit {\n  height: 40px;\n  width: 100vw;\n  bottom: 0;\n  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.6);\n  background-color: rgba(47, 47, 47, 0.8); }\n  .credit a {\n    color: rgba(221, 221, 221, 0.6) !important; }\n\n.copyright {\n  height: 40px;\n  line-height: 37px;\n  vertical-align: middle; }\n\n.clock {\n  align-items: center;\n  background-color: rgba(15, 101, 141, 0.3);\n  border: 0px solid rgba(15, 101, 141, 0.6);\n  border-top-left-radius: 20px;\n  border-bottom-right-radius: 20px;\n  border-top-right-radius: 100px;\n  border-bottom-left-radius: 100px;\n  height: 14rem;\n  margin: 4rem auto;\n  margin-top: 2rem;\n  width: 14rem;\n  -ms-transform: rotate(-45deg);\n  /* IE 9 */\n  -webkit-transform: rotate(-45deg);\n  /* Chrome, Safari, Opera */\n  transform: rotate(-45deg);\n  box-shadow: 0px 0px 15px 1px rgba(15, 101, 141, 0.5); }\n\n.clock-text {\n  color: rgba(102, 102, 102, 0.7);\n  font-size: 3rem;\n  font-weight: bolder;\n  cursor: default;\n  -ms-transform: rotate(45deg);\n  /* IE 9 */\n  -webkit-transform: rotate(45deg);\n  /* Chrome, Safari, Opera */\n  transform: rotate(45deg); }\n\n.controls {\n  display: flex;\n  justify-content: center; }\n  .controls .button {\n    padding: .75rem 3rem;\n    border-radius: 5px;\n    outline: none;\n    box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.6);\n    font-size: 17px; }\n  .controls .button:first-child {\n    margin-right: 1.5rem; }\n\n.button.primary {\n  background-color: rgba(15, 101, 141, 0.8) !important; }\n\n.button.hollow.alert {\n  border: 1px solid rgba(255, 0, 0, 0.8);\n  color: rgba(255, 0, 0, 0.8) !important; }\n\n.countdown-form {\n  width: 300px; }\n  .countdown-form .input_time, .countdown-form .input-button {\n    border-radius: 5px;\n    font-size: 19px;\n    height: 40px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    outline: none;\n    border: 0px;\n    padding: 0;\n    text-align: center;\n    display: table-cell;\n    vertical-align: middle; }\n  .countdown-form .input_time {\n    box-shadow: inset 0 0px 0px rgba(10, 10, 10, 0.1);\n    border-radius: 0px;\n    border-bottom: 2px solid rgba(102, 102, 102, 0.6); }\n  .countdown-form .input-button {\n    background-color: rgba(15, 101, 141, 0.8); }\n\nbody {\n  margin: 0;\n  padding: 0;\n  height: 100vh;\n  width: 100vw; }\n\n.display-flex {\n  display: flex;\n  align-items: center;\n  justify-content: center; }\n\n.transition-3 {\n  -webkit-transition: all .3s ease-in-out;\n  -moz-transition: all .3s ease-in-out;\n  -o-transition: all .3s ease-in-out;\n  transition: all .3s ease-in-out; }\n\n.bt {\n  font-family: 'bitter'; }\n\n.row {\n  max-width: none;\n  height: calc(100vh - 100px);\n  display: flex;\n  align-items: center;\n  justify-content: center; }\n\n.inner-div {\n  height: 100%;\n  width: 300px;\n  display: flex;\n  align-items: center;\n  justify-content: center; }\n\n.countdown {\n  width: 300px; }\n", ""]);
+	exports.push([module.id, ".menu-bar {\n  background-color: rgba(47, 47, 47, 0.8);\n  box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.6);\n  height: 60px !important;\n  padding-top: 0px !important;\n  width: 100vw; }\n  .menu-bar .active-link {\n    font-weight: bold;\n    font-size: 35px;\n    -webkit-transition: all .3s ease-in-out;\n    -moz-transition: all .3s ease-in-out;\n    -o-transition: all .3s ease-in-out;\n    transition: all .3s ease-in-out; }\n  .menu-bar .eachMenu {\n    float: left;\n    width: 30% !important;\n    margin-left: 2.5%;\n    height: 60px !important;\n    font-size: 30px;\n    -webkit-transition: all .3s ease-in-out;\n    -moz-transition: all .3s ease-in-out;\n    -o-transition: all .3s ease-in-out;\n    transition: all .3s ease-in-out; }\n    .menu-bar .eachMenu a {\n      color: rgba(221, 221, 221, 0.6) !important; }\n  .menu-bar .logo {\n    font-size: 40px;\n    cursor: default;\n    text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.7); }\n\n.credit {\n  height: 40px;\n  width: 100vw;\n  bottom: 0;\n  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.6);\n  background-color: rgba(47, 47, 47, 0.8); }\n  .credit a {\n    color: rgba(221, 221, 221, 0.6) !important; }\n\n.copyright {\n  height: 40px;\n  line-height: 37px;\n  vertical-align: middle; }\n\n.clock {\n  align-items: center;\n  background-color: rgba(15, 101, 141, 0.3);\n  border: 0px solid rgba(15, 101, 141, 0.6);\n  border-top-left-radius: 20px;\n  border-bottom-right-radius: 20px;\n  border-top-right-radius: 100px;\n  border-bottom-left-radius: 100px;\n  height: 14rem;\n  margin: 2rem auto;\n  width: 14rem;\n  -ms-transform: rotate(-45deg);\n  /* IE 9 */\n  -webkit-transform: rotate(-45deg);\n  /* Chrome, Safari, Opera */\n  transform: rotate(-45deg);\n  box-shadow: 0px 0px 15px 1px rgba(15, 101, 141, 0.5); }\n\n.clock-text {\n  color: rgba(102, 102, 102, 0.7);\n  font-size: 3rem;\n  font-weight: bolder;\n  cursor: default;\n  -ms-transform: rotate(45deg);\n  /* IE 9 */\n  -webkit-transform: rotate(45deg);\n  /* Chrome, Safari, Opera */\n  transform: rotate(45deg); }\n\n.controls {\n  display: flex;\n  justify-content: center; }\n  .controls .button {\n    padding: .75rem 3rem;\n    border-radius: 5px;\n    outline: none;\n    box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.6);\n    font-size: 17px; }\n  .controls .button:first-child {\n    margin-right: 1.5rem; }\n\n.button.primary {\n  background-color: rgba(15, 101, 141, 0.8) !important; }\n\n.button.hollow.alert {\n  border: 1px solid rgba(255, 0, 0, 0.8);\n  color: rgba(255, 0, 0, 0.8) !important; }\n\n.countdown-form {\n  width: 300px; }\n  .countdown-form .input_time, .countdown-form .input-button {\n    border-radius: 5px;\n    font-size: 19px;\n    height: 40px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    outline: none;\n    border: 0px;\n    padding: 0;\n    text-align: center;\n    display: table-cell;\n    vertical-align: middle; }\n  .countdown-form .input_time {\n    box-shadow: inset 0 0px 0px rgba(10, 10, 10, 0.1);\n    border-radius: 0px;\n    border-bottom: 2px solid rgba(102, 102, 102, 0.6); }\n  .countdown-form .input-button {\n    background-color: rgba(15, 101, 141, 0.8); }\n\nbody {\n  margin: 0;\n  padding: 0;\n  height: 100vh;\n  width: 100vw; }\n\n.display-flex {\n  display: flex;\n  align-items: center;\n  justify-content: center; }\n\n.transition-3 {\n  -webkit-transition: all .3s ease-in-out;\n  -moz-transition: all .3s ease-in-out;\n  -o-transition: all .3s ease-in-out;\n  transition: all .3s ease-in-out; }\n\n.bt {\n  font-family: 'bitter'; }\n\n.row {\n  max-width: none;\n  height: calc(100vh - 100px);\n  display: flex;\n  align-items: center;\n  justify-content: center; }\n\n.inner-div {\n  height: 100%;\n  width: 300px;\n  display: flex;\n  align-items: center;\n  justify-content: center; }\n\n.countdown, .timer {\n  width: 300px; }\n\n.header-container {\n  width: 300px;\n  margin-bottom: 30px;\n  font-size: 28px;\n  font-weight: bolder;\n  color: rgba(23, 23, 23, 0.7); }\n", ""]);
 
 	// exports
 

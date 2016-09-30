@@ -47,13 +47,21 @@ body{
   align-items: center;
   justify-content: center;
 }
-.countdown
+.countdown, .timer
 {
 
   width: 300px;
-  // background-color: blue;/
-
-
+  // background-color: blue;
+}
+.header-container
+{
+  width: 300px;
+  // height: 30px;
+  // background-color: orange;
+  margin-bottom: 30px;
+font-size: 28px;
+font-weight: bolder;
+color: rgba(23,23,23,.7);
 }
 // @media(max-width:992px){
 //
