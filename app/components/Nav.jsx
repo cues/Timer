@@ -6,16 +6,12 @@ var{Link,IndexLink} = require('react-router');
 var Nav = () => {
     return (
       <div className="top-bar bt" >
-          <div className="top-bar-left">
 
-              <div className="eachMenu display-flex ">Timer App</div>
-              <div className="eachMenu display-flex"><IndexLink to="/" activeClassName="active-link">TIMER</IndexLink></div>
-              <div className="eachMenu display-flex"><Link to="countdown" activeClassName="active-link">COUNTDOWN</Link></div>
+          <i className="eachMenu logo display-flex material-icons">access_time</i>
+              <i className="material-icons eachMenu display-flex"><IndexLink to="/" activeClassName="active-link">timer</IndexLink></i>
+                <i className="material-icons eachMenu display-flex"><Link to="countdown" activeClassName="active-link">timelapse</Link></i>
 
-          </div>
-          <div className="top-bar-right">
-            <div className="credit display-flex"><a href="errollalfredo.com" target="_blank">Created by : Erroll Alfredo Antao</a></div>
-          </div>
+
 
 
 

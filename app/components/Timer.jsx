@@ -3,7 +3,7 @@ var React = require('react');
 var Timer = React.createClass({
   render : function(){
     return(
-      <div className="timer">
+      <div className="timer bt">
         Timer
       </div>
     );

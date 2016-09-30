@@ -8,11 +8,14 @@
     .active-link
     {
       font-weight: bold;
+      font-size: 35px;
+      -webkit-transition: all .3s ease-in-out;
+         -moz-transition: all .3s ease-in-out;
+           -o-transition: all .3s ease-in-out;
+              transition: all .3s ease-in-out;
+
     }
 
-    .top-bar-left
-    {
-      width: 50% !important;
 
           .eachMenu
           {
@@ -20,25 +23,49 @@
             width: 30% !important;
             margin-left: 2.5%;
             height: 60px !important;
-
+            font-size: 30px;
+            -webkit-transition: all .3s ease-in-out;
+               -moz-transition: all .3s ease-in-out;
+                 -o-transition: all .3s ease-in-out;
+                    transition: all .3s ease-in-out;
+            a
+            {
+              color: rgba(221,221,221,.6) !important;
+            }
           }
-    }
 
-    .top-bar-right{
-      width: 50% !important;
-      text-align: right;
-
-          .credit
+          .logo
           {
-              height: 60px !important;
-              justify-content: flex-end !important;
-              padding-right: 20px;
+            font-size: 40px;
+            cursor: default;
+            text-shadow:  0px 0px 5px rgba(0,0,0,.7);
           }
-    }
 
 
 }
 
+
+.credit
+{
+  height: 40px;
+  width: 100vw;
+  position: absolute;
+  bottom: 0;
+  box-shadow: 0px 0px 5px 0px rgba(0,0,0,.6);
+  background-color: $nav-background;
+  a
+  {
+    color: rgba(221,221,221,.6) !important;
+  }
+}
+.copyright
+{
+  height: 40px;
+line-height: 37px;
+vertical-align: middle;
+
+
+}
 
 // .row
 // {
@@ -51,21 +78,19 @@
 // }
 
 
-@media(max-width:962px){
-  .row{
-    min-height: calc(100vh - 150px)
-  }
-  .top-bar
-  {
-    height: 100px !important;
-      .top-bar-left, .top-bar-right
-      {
-        width: 100% !important
-      }
-  }
-  .credit
-  {
-    height: 40px !important;
-    justify-content: center !important;
-  }
-}
+// @media(max-width:992px){
+//
+//   .top-bar
+//   {
+//     height: 100px !important;
+//       .top-bar-left, .top-bar-right
+//       {
+//         width: 100% !important
+//       }
+//   }
+//   .credit
+//   {
+//     height: 40px !important;
+//     justify-content: center !important;
+//   }
+// }
