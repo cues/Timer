@@ -34,9 +34,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 0px 5px;
     outline: none;
     border: 0px;
+    padding: 0;
+    text-align: center;
+  display:table-cell;
+  vertical-align:middle;
   }
   .input_time
   {
@@ -47,6 +50,8 @@
   .input-button
   {
     background-color: rgba(15,101,141,.8);
+  // padding: 0;
+
   }
 
 }
