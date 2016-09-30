@@ -12,8 +12,8 @@ var Main = React.createClass({
         <div className="inner-div">
           {this.props.children}
         </div>
-        <Footer/>
       </div>
+      <Footer/>
       </div>
     );
   }

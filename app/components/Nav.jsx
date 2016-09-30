@@ -5,7 +5,7 @@ var{Link,IndexLink} = require('react-router');
 
 var Nav = () => {
     return (
-      <div className="top-bar bt" >
+      <div className="menu-bar bt" >
 
           <i className="eachMenu logo display-flex material-icons">access_time</i>
               <i className="material-icons eachMenu display-flex"><IndexLink to="/" activeClassName="active-link">timer</IndexLink></i>
